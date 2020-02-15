@@ -38,11 +38,42 @@ class _OrdersScreenState extends State<OrdersScreen> {
     );
   }
 
-  List<DocumentSnapshot> orders = [];
+  List<Map<String, dynamic>> orders = [];
 
   @override
   void initState() {
     super.initState();
+
+    firestore.collection('orders').get().then((value) {
+      value.docs.forEach((doc) {
+        var customer;
+        var product;
+        firestore
+            .collection('customers')
+            .doc(doc.data()['customer'])
+            .get()
+            .then((cus) {
+          customer = cus;
+          firestore
+              .collection('products')
+              .doc(doc.data()['product'])
+              .get()
+              .then((prod) {
+            product = prod;
+            orders.add({
+              'id:': doc.id,
+              'customer': customer,
+              'product': product,
+              'size': doc.data()['size'],
+              'quantity': doc.data()['quantity'],
+              'address': doc.data()['address'],
+            });
+          });
+        });
+      });
+
+      print(orders);
+    });
   }
 
   @override
@@ -59,21 +90,12 @@ class _OrdersScreenState extends State<OrdersScreen> {
               itemBuilder: (BuildContext context, int index) {
                 DocumentSnapshot ds = snapshot.data.docs[index];
 
-                DocumentSnapshot customer;
-                firestore
-                    .collection('customers')
-                    .doc(ds.data()['customer'])
-                    .get()
-                    .then((value) {
-                  customer = value;
-                });
-
                 return ListTile(
                   leading: Icon(
                     Icons.assignment,
                     color: Colors.black,
                   ),
-                  title: Text('${customer.data()['firstname']}'),
+                  title: Text('${ds.data()['customer']}'),
                   subtitle: Text(ds.data()['customer']),
                   trailing: PopupMenuButton(
                     color: Colors.white,
