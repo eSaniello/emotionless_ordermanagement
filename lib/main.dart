@@ -1,4 +1,6 @@
+import 'package:emotionless/screens/add_orders_screen.dart';
 import 'package:emotionless/screens/edit_customers_screen.dart';
+import 'package:emotionless/screens/edit_products_screen.dart';
 import 'package:emotionless/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase/firebase.dart' as Firebase;
@@ -33,6 +35,8 @@ class MyApp extends StatelessWidget {
         print('build route for ${settings.name}');
         var routes = <String, WidgetBuilder>{
           '/edit_customer': (context) => EditCustomers(settings.arguments),
+          '/edit_product': (context) => EditProducts(settings.arguments),
+          '/add_orders': (context) => AddOrders(),
         };
         WidgetBuilder builder = routes[settings.name];
         return MaterialPageRoute(builder: (ctx) => builder(ctx));
@@ -40,3 +44,14 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+// firestore.collection('names').add({'text': 'happyharis'}); // create
+
+// firestore.collection('names').doc('111').get(); // read
+
+// firestore
+//     .collection('names')
+//     .doc('111')
+//     .update(data: {'text': 'thehappyharis'}); // update
+
+// firestore.collection('names').doc('7X92XsbOvbnjTfOtKYSr').delete(); // dele
