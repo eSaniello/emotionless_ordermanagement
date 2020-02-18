@@ -114,6 +114,12 @@ class _AddOrdersState extends State<AddOrders> {
               decoration: InputDecoration(hintText: 'Address'),
             ),
             RaisedButton(
+              child: Text('Cancel'),
+              onPressed: () {
+                Navigator.pushReplacementNamed(context, '/home');
+              },
+            ),
+            RaisedButton(
               child: Text('Place order'),
               onPressed: () {
                 firestore.collection('orders').add({
@@ -125,7 +131,7 @@ class _AddOrdersState extends State<AddOrders> {
                   'status': 'pending',
                 });
 
-                Navigator.pop(context);
+                Navigator.pushReplacementNamed(context, '/home');
               },
             ),
           ],

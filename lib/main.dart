@@ -34,6 +34,7 @@ class MyApp extends StatelessWidget {
       onGenerateRoute: (RouteSettings settings) {
         print('build route for ${settings.name}');
         var routes = <String, WidgetBuilder>{
+          '/home': (context) => HomeScreen(),
           '/edit_customer': (context) => EditCustomers(settings.arguments),
           '/edit_product': (context) => EditProducts(settings.arguments),
           '/add_orders': (context) => AddOrders(),
