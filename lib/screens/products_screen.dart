@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase/firebase.dart' as fb;
 import 'package:firebase/firestore.dart';
+import '../extensions/hover_extensions.dart';
 
 class ProductsScreen extends StatefulWidget {
   @override
@@ -25,7 +26,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-            ),
+            ).showCursorOnHover,
             FlatButton(
               child: Text('Confirm'),
               onPressed: () {
@@ -33,7 +34,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
                 Navigator.pop(context);
                 Navigator.pop(context);
               },
-            )
+            ).showCursorOnHover,
           ],
         );
       },
@@ -64,7 +65,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-            ),
+            ).showCursorOnHover,
             FlatButton(
               child: Text('Add Product'),
               onPressed: () {
@@ -74,7 +75,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
                 });
                 Navigator.pop(context);
               },
-            )
+            ).showCursorOnHover,
           ],
         );
       },
@@ -126,7 +127,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
                         ),
                       ),
                     ],
-                  ),
+                  ).showCursorOnHover,
                 );
               });
         },
@@ -134,7 +135,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: _showAddDialog,
-      ),
+      ).showCursorOnHover,
     );
   }
 }

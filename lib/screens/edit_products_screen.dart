@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase/firestore.dart';
 import 'package:firebase/firebase.dart' as fb;
+import '../extensions/hover_extensions.dart';
 
 class EditProducts extends StatefulWidget {
   final DocumentSnapshot ds;
@@ -29,7 +30,7 @@ class _EditProductsState extends State<EditProducts> {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-            ),
+            ).showCursorOnHover,
             FlatButton(
               child: Text('Confirm'),
               onPressed: () {
@@ -41,7 +42,7 @@ class _EditProductsState extends State<EditProducts> {
                 Navigator.pop(context);
                 Navigator.pop(context);
               },
-            )
+            ).showCursorOnHover,
           ],
         );
       },
@@ -77,7 +78,7 @@ class _EditProductsState extends State<EditProducts> {
               onPressed: () {
                 _showConfirmDialog(widget.ds);
               },
-            ),
+            ).showCursorOnHover,
           ],
         ),
       ),

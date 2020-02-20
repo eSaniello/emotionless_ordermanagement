@@ -1,5 +1,6 @@
 import 'package:emotionless/screens/add_orders_screen.dart';
 import 'package:emotionless/screens/edit_customers_screen.dart';
+import 'package:emotionless/screens/edit_order_screen.dart';
 import 'package:emotionless/screens/edit_products_screen.dart';
 import 'package:emotionless/screens/home_screen.dart';
 import 'package:flutter/material.dart';
@@ -26,6 +27,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Emotionless',
       theme: ThemeData(
         primarySwatch: Colors.blue,
@@ -38,6 +40,7 @@ class MyApp extends StatelessWidget {
           '/edit_customer': (context) => EditCustomers(settings.arguments),
           '/edit_product': (context) => EditProducts(settings.arguments),
           '/add_orders': (context) => AddOrders(),
+          '/edit_order': (context) => EditOrder(settings.arguments),
         };
         WidgetBuilder builder = routes[settings.name];
         return MaterialPageRoute(builder: (ctx) => builder(ctx));

@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:firebase/firebase.dart' as fb;
 import 'package:firebase/firestore.dart';
+import 'package:firebase/firebase.dart' as fb;
 import '../extensions/hover_extensions.dart';
 
-class AddOrders extends StatefulWidget {
+class EditOrder extends StatefulWidget {
+  final Map order;
+
+  EditOrder(this.order);
+
   @override
-  _AddOrdersState createState() => _AddOrdersState();
+  _EditOrderState createState() => _EditOrderState();
 }
 
-class _AddOrdersState extends State<AddOrders> {
+class _EditOrderState extends State<EditOrder> {
   final Firestore firestore = fb.firestore();
   TextEditingController size = TextEditingController();
   TextEditingController quantity = TextEditingController();
@@ -20,6 +24,9 @@ class _AddOrdersState extends State<AddOrders> {
   DocumentSnapshot selectedProduct;
   List<DocumentSnapshot> products = <DocumentSnapshot>[];
 
+  String selectedStatus;
+  List<String> status = <String>[];
+
   @override
   void initState() {
     super.initState();
@@ -29,6 +36,9 @@ class _AddOrdersState extends State<AddOrders> {
         value.forEach((doc) {
           customers.add(doc);
         });
+
+        selectedCustomer = customers
+            .firstWhere((element) => element.id == widget.order['customer'].id);
       });
     });
 
@@ -37,15 +47,70 @@ class _AddOrdersState extends State<AddOrders> {
         value.forEach((doc) {
           products.add(doc);
         });
+
+        selectedProduct = products
+            .firstWhere((element) => element.id == widget.order['product'].id);
       });
     });
+
+    status.add('pending');
+    status.add('delivered');
+    selectedStatus =
+        status.firstWhere((element) => element == widget.order['status']);
+
+    size.text = widget.order['size'];
+    quantity.text = widget.order['quantity'];
+    address.text = widget.order['address'];
+  }
+
+  void _showConfirmDialog(
+    String orderId,
+    DocumentSnapshot customer,
+    DocumentSnapshot product,
+    String address,
+    String quantity,
+    String size,
+    String status,
+  ) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Are you sure?'),
+          actions: <Widget>[
+            FlatButton(
+              child: new Text("Cancel"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ).showCursorOnHover,
+            FlatButton(
+              child: Text('Confirm'),
+              onPressed: () {
+                firestore.collection('orders').doc(orderId).update(data: {
+                  'customer': customer.id,
+                  'product': product.id,
+                  'size': size,
+                  'quantity': quantity,
+                  'status': status,
+                  'address': address,
+                });
+                Navigator.pop(context);
+                Navigator.pop(context);
+                Navigator.pushReplacementNamed(context, '/home');
+              },
+            ).showCursorOnHover,
+          ],
+        );
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add new order'),
+        title: Text('Edit order'),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -114,25 +179,50 @@ class _AddOrdersState extends State<AddOrders> {
               controller: address,
               decoration: InputDecoration(hintText: 'Address'),
             ),
+            DropdownButton<String>(
+              hint: Text("Status"),
+              value: selectedStatus,
+              onChanged: (String value) {
+                setState(() {
+                  selectedStatus = value;
+                });
+              },
+              items: status.map((String status) {
+                return DropdownMenuItem<String>(
+                  value: status,
+                  child: Row(
+                    children: <Widget>[
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        status,
+                        style: TextStyle(color: Colors.black),
+                      ),
+                    ],
+                  ),
+                );
+              }).toList(),
+            ).showCursorOnHover,
             RaisedButton(
               child: Text('Cancel'),
               onPressed: () {
+                Navigator.pop(context);
                 Navigator.pushReplacementNamed(context, '/home');
               },
             ).showCursorOnHover,
             RaisedButton(
-              child: Text('Place order'),
+              child: Text('Update order'),
               onPressed: () {
-                firestore.collection('orders').add({
-                  'customer': selectedCustomer.id,
-                  'product': selectedProduct.id,
-                  'size': size.text,
-                  'quantity': quantity.text,
-                  'address': address.text,
-                  'status': 'pending',
-                });
-
-                Navigator.pushReplacementNamed(context, '/home');
+                _showConfirmDialog(
+                  widget.order['id'],
+                  selectedCustomer,
+                  selectedProduct,
+                  address.text,
+                  quantity.text,
+                  size.text,
+                  selectedStatus,
+                );
               },
             ).showCursorOnHover,
           ],

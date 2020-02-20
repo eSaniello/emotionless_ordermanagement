@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase/firebase.dart' as fb;
 import 'package:firebase/firestore.dart';
+import '../extensions/hover_extensions.dart';
 
 class CustomersScreen extends StatefulWidget {
   @override
@@ -26,7 +27,7 @@ class _CustomersScreenState extends State<CustomersScreen> {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-            ),
+            ).showCursorOnHover,
             FlatButton(
               child: Text('Confirm'),
               onPressed: () {
@@ -34,7 +35,7 @@ class _CustomersScreenState extends State<CustomersScreen> {
                 Navigator.pop(context);
                 Navigator.pop(context);
               },
-            )
+            ).showCursorOnHover,
           ],
         );
       },
@@ -69,7 +70,7 @@ class _CustomersScreenState extends State<CustomersScreen> {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-            ),
+            ).showCursorOnHover,
             FlatButton(
               child: Text('Add Customer'),
               onPressed: () {
@@ -80,7 +81,7 @@ class _CustomersScreenState extends State<CustomersScreen> {
                 });
                 Navigator.pop(context);
               },
-            )
+            ).showCursorOnHover,
           ],
         );
       },
@@ -133,7 +134,7 @@ class _CustomersScreenState extends State<CustomersScreen> {
                         ),
                       ),
                     ],
-                  ),
+                  ).showCursorOnHover,
                 );
               });
         },
@@ -141,7 +142,7 @@ class _CustomersScreenState extends State<CustomersScreen> {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: _showAddDialog,
-      ),
+      ).showCursorOnHover,
     );
   }
 }

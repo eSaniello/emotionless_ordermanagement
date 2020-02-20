@@ -2,6 +2,7 @@ import 'package:emotionless/screens/customers_screen.dart';
 import 'package:emotionless/screens/orders_screen.dart';
 import 'package:emotionless/screens/products_screen.dart';
 import 'package:flutter/material.dart';
+import '../extensions/hover_extensions.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -17,9 +18,11 @@ class _HomeScreenState extends State<HomeScreen> {
         appBar: AppBar(
           bottom: TabBar(
             tabs: [
-              Tab(text: 'Orders', icon: Icon(Icons.shopping_basket)),
-              Tab(text: 'Customers', icon: Icon(Icons.people)),
-              Tab(text: 'Products', icon: Icon(Icons.spa)),
+              Tab(text: 'Orders', icon: Icon(Icons.shopping_basket))
+                  .showCursorOnHover,
+              Tab(text: 'Customers', icon: Icon(Icons.people))
+                  .showCursorOnHover,
+              Tab(text: 'Products', icon: Icon(Icons.spa)).showCursorOnHover,
             ],
           ),
           title: Text('Emotionless Order Management'),
