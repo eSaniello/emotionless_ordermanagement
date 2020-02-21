@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase/firebase.dart' as fb;
 import 'package:firebase/firestore.dart';
+import 'package:intl/intl.dart';
 import '../extensions/hover_extensions.dart';
 
 class OrdersScreen extends StatefulWidget {
@@ -71,6 +72,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                 'quantity': o.data()['quantity'],
                 'size': o.data()['size'],
                 'status': o.data()['status'],
+                'date': o.data()['date'],
               };
               orders.add(order);
             });
@@ -81,7 +83,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
   }
 
   onSortColum(int columnIndex, bool ascending) {
-    if (columnIndex == 7) {
+    if (columnIndex == 8) {
       if (ascending) {
         orders.sort((a, b) => a['status'].compareTo(b['status']));
       } else {
@@ -94,77 +96,88 @@ class _OrdersScreenState extends State<OrdersScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
-        child: DataTable(
-          sortAscending: sort,
-          sortColumnIndex: 7,
-          columns: [
-            DataColumn(label: Text('Customer')),
-            DataColumn(label: Text('Product')),
-            DataColumn(label: Text('Design')),
-            DataColumn(label: Text('Size')),
-            DataColumn(numeric: true, label: Text('Quantity')),
-            DataColumn(label: Text('Address')),
-            DataColumn(numeric: true, label: Text('Mobile')),
-            DataColumn(
-                label: Text('Status'),
-                onSort: (columnIndex, ascending) {
-                  setState(() {
-                    sort = !sort;
-                  });
-                  onSortColum(columnIndex, ascending);
-                }),
-            DataColumn(label: Text('Edit')),
-            DataColumn(label: Text('Delete')),
-          ],
-          rows: orders
-              .map((order) => DataRow(cells: [
-                    DataCell(Text(
-                      '${order['customer'].data()['firstname']} ${order['customer'].data()['lastname']}',
-                    )),
-                    DataCell(Text(
-                      '${order['product'].data()['name']}',
-                    )),
-                    DataCell(Text(
-                      '${order['product'].data()['design']}',
-                    )),
-                    DataCell(Text(
-                      '${order['size']}',
-                    )),
-                    DataCell(Text(
-                      '${order['quantity']}',
-                    )),
-                    DataCell(Text(
-                      '${order['address']}',
-                    )),
-                    DataCell(Text(
-                      '${order['customer'].data()['mobile']}',
-                    )),
-                    DataCell(
-                      Text(
-                        '${order['status']}',
+        scrollDirection: Axis.vertical,
+        child: SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: DataTable(
+            sortAscending: sort,
+            sortColumnIndex: 8,
+            columns: [
+              DataColumn(label: Text('Order date')),
+              DataColumn(label: Text('Customer')),
+              DataColumn(label: Text('Product')),
+              DataColumn(label: Text('Design')),
+              DataColumn(label: Text('Size')),
+              DataColumn(numeric: true, label: Text('Quantity')),
+              DataColumn(label: Text('Address')),
+              DataColumn(numeric: true, label: Text('Mobile')),
+              DataColumn(
+                  label: Text('Status'),
+                  onSort: (columnIndex, ascending) {
+                    setState(() {
+                      sort = !sort;
+                    });
+                    onSortColum(columnIndex, ascending);
+                  }),
+              DataColumn(label: Text('Edit / Delete')),
+            ],
+            rows: orders
+                .map((order) => DataRow(cells: [
+                      DataCell(
+                        Text(
+                          '${DateFormat("dd-MMM-yyyy").format(order['date'])}',
+                        ),
                       ),
-                    ),
-                    DataCell(
-                      IconButton(
-                        icon: Icon(Icons.edit),
-                        onPressed: () {
-                          Navigator.of(context).pushNamed(
-                            '/edit_order',
-                            arguments: order,
-                          );
-                        },
-                      ).showCursorOnHover,
-                    ),
-                    DataCell(
-                      IconButton(
-                        icon: Icon(Icons.delete),
-                        onPressed: () {
-                          _showDeleteDialog(order);
-                        },
-                      ).showCursorOnHover,
-                    ),
-                  ]))
-              .toList(),
+                      DataCell(Text(
+                        '${order['customer'].data()['firstname']} ${order['customer'].data()['lastname']}',
+                      )),
+                      DataCell(Text(
+                        '${order['product'].data()['name']}',
+                      )),
+                      DataCell(Text(
+                        '${order['product'].data()['design']}',
+                      )),
+                      DataCell(Text(
+                        '${order['size']}',
+                      )),
+                      DataCell(Text(
+                        '${order['quantity']}',
+                      )),
+                      DataCell(Text(
+                        '${order['address']}',
+                      )),
+                      DataCell(Text(
+                        '${order['customer'].data()['mobile']}',
+                      )),
+                      DataCell(
+                        Text(
+                          '${order['status']}',
+                        ),
+                      ),
+                      DataCell(
+                        Row(
+                          children: <Widget>[
+                            IconButton(
+                              icon: Icon(Icons.edit),
+                              onPressed: () {
+                                Navigator.of(context).pushNamed(
+                                  '/edit_order',
+                                  arguments: order,
+                                );
+                              },
+                            ).showCursorOnHover,
+                            IconButton(
+                              icon: Icon(Icons.delete),
+                              onPressed: () {
+                                _showDeleteDialog(order);
+                              },
+                            ).showCursorOnHover,
+                          ],
+                        ),
+                      ),
+                    ]))
+                .toList(),
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton(

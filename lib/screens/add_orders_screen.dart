@@ -20,9 +20,13 @@ class _AddOrdersState extends State<AddOrders> {
   DocumentSnapshot selectedProduct;
   List<DocumentSnapshot> products = <DocumentSnapshot>[];
 
+  bool isEmpty;
+
   @override
   void initState() {
     super.initState();
+
+    isEmpty = false;
 
     firestore.collection('customers').get().then((value) {
       setState(() {
@@ -50,6 +54,12 @@ class _AddOrdersState extends State<AddOrders> {
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
+            isEmpty == true
+                ? Text(
+                    'Please fill in all fields!',
+                    style: TextStyle(color: Colors.red),
+                  )
+                : Container(),
             DropdownButton<DocumentSnapshot>(
               hint: Text("Select customer"),
               value: selectedCustomer,
@@ -123,16 +133,27 @@ class _AddOrdersState extends State<AddOrders> {
             RaisedButton(
               child: Text('Place order'),
               onPressed: () {
-                firestore.collection('orders').add({
-                  'customer': selectedCustomer.id,
-                  'product': selectedProduct.id,
-                  'size': size.text,
-                  'quantity': quantity.text,
-                  'address': address.text,
-                  'status': 'pending',
-                });
+                if (selectedCustomer != null &&
+                    selectedProduct != null &&
+                    size.text != "" &&
+                    quantity.text != "" &&
+                    address.text != "") {
+                  firestore.collection('orders').add({
+                    'date': DateTime.now(),
+                    'customer': selectedCustomer.id,
+                    'product': selectedProduct.id,
+                    'size': size.text,
+                    'quantity': quantity.text,
+                    'address': address.text,
+                    'status': 'pending',
+                  });
 
-                Navigator.pushReplacementNamed(context, '/home');
+                  Navigator.pushReplacementNamed(context, '/home');
+                } else {
+                  setState(() {
+                    isEmpty = true;
+                  });
+                }
               },
             ).showCursorOnHover,
           ],

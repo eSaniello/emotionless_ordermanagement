@@ -27,9 +27,13 @@ class _EditOrderState extends State<EditOrder> {
   String selectedStatus;
   List<String> status = <String>[];
 
+  bool isEmpty;
+
   @override
   void initState() {
     super.initState();
+
+    isEmpty = false;
 
     firestore.collection('customers').get().then((value) {
       setState(() {
@@ -115,6 +119,12 @@ class _EditOrderState extends State<EditOrder> {
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
+            isEmpty == true
+                ? Text(
+                    'Please fill in all fields!',
+                    style: TextStyle(color: Colors.red),
+                  )
+                : Container(),
             DropdownButton<DocumentSnapshot>(
               hint: Text("Select customer"),
               value: selectedCustomer,
@@ -214,15 +224,27 @@ class _EditOrderState extends State<EditOrder> {
             RaisedButton(
               child: Text('Update order'),
               onPressed: () {
-                _showConfirmDialog(
-                  widget.order['id'],
-                  selectedCustomer,
-                  selectedProduct,
-                  address.text,
-                  quantity.text,
-                  size.text,
-                  selectedStatus,
-                );
+                if (widget.order['id'] != "" &&
+                    selectedCustomer != null &&
+                    selectedProduct != null &&
+                    selectedStatus != "" &&
+                    address.text != "" &&
+                    quantity.text != "" &&
+                    size.text != "") {
+                  _showConfirmDialog(
+                    widget.order['id'],
+                    selectedCustomer,
+                    selectedProduct,
+                    address.text,
+                    quantity.text,
+                    size.text,
+                    selectedStatus,
+                  );
+                } else {
+                  setState(() {
+                    isEmpty = true;
+                  });
+                }
               },
             ).showCursorOnHover,
           ],
