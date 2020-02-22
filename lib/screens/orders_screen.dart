@@ -63,18 +63,25 @@ class _OrdersScreenState extends State<OrdersScreen> {
               .doc(o.data()['product'])
               .get()
               .then((prod) {
-            setState(() {
-              var order = {
-                'id': o.id,
-                'customer': cus,
-                'product': prod,
-                'address': o.data()['address'],
-                'quantity': o.data()['quantity'],
-                'size': o.data()['size'],
-                'status': o.data()['status'],
-                'date': o.data()['date'],
-              };
-              orders.add(order);
+            firestore
+                .collection('designs')
+                .doc(o.data()['design'])
+                .get()
+                .then((design) {
+              setState(() {
+                var order = {
+                  'id': o.id,
+                  'customer': cus,
+                  'product': prod,
+                  'design': design,
+                  'address': o.data()['address'],
+                  'quantity': o.data()['quantity'],
+                  'size': o.data()['size'],
+                  'status': o.data()['status'],
+                  'date': o.data()['date'],
+                };
+                orders.add(order);
+              });
             });
           });
         });
@@ -135,7 +142,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                         '${order['product'].data()['name']}',
                       )),
                       DataCell(Text(
-                        '${order['product'].data()['design']}',
+                        '${order['design'].data()['design']}',
                       )),
                       DataCell(Text(
                         '${order['size']}',

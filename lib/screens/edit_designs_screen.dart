@@ -3,18 +3,18 @@ import 'package:firebase/firestore.dart';
 import 'package:firebase/firebase.dart' as fb;
 import '../extensions/hover_extensions.dart';
 
-class EditProducts extends StatefulWidget {
+class EditDesigns extends StatefulWidget {
   final DocumentSnapshot ds;
 
-  EditProducts(this.ds);
+  EditDesigns(this.ds);
 
   @override
-  _EditProductsState createState() => _EditProductsState();
+  _EditDesignsState createState() => _EditDesignsState();
 }
 
-class _EditProductsState extends State<EditProducts> {
+class _EditDesignsState extends State<EditDesigns> {
   final Firestore firestore = fb.firestore();
-  TextEditingController name = TextEditingController();
+  TextEditingController design = TextEditingController();
 
   void _showConfirmDialog(DocumentSnapshot ds) {
     showDialog(
@@ -32,8 +32,8 @@ class _EditProductsState extends State<EditProducts> {
             FlatButton(
               child: Text('Confirm'),
               onPressed: () {
-                firestore.collection('products').doc(ds.id).update(data: {
-                  'name': name.text,
+                firestore.collection('designs').doc(ds.id).update(data: {
+                  'design': design.text,
                 });
                 Navigator.pop(context);
                 Navigator.pop(context);
@@ -49,24 +49,24 @@ class _EditProductsState extends State<EditProducts> {
   @override
   void initState() {
     super.initState();
-    name.text = widget.ds.data()['name'];
+    design.text = widget.ds.data()['design'];
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Edit Product'),
+        title: Text('Edit Design'),
       ),
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
             TextField(
-              controller: name,
-              decoration: InputDecoration(hintText: 'Name'),
+              controller: design,
+              decoration: InputDecoration(hintText: 'Design'),
             ),
             RaisedButton(
-              child: Text('Update Product'),
+              child: Text('Update Design'),
               onPressed: () {
                 _showConfirmDialog(widget.ds);
               },

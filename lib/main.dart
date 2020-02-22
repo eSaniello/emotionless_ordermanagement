@@ -1,5 +1,6 @@
 import 'package:emotionless/screens/add_orders_screen.dart';
 import 'package:emotionless/screens/edit_customers_screen.dart';
+import 'package:emotionless/screens/edit_designs_screen.dart';
 import 'package:emotionless/screens/edit_order_screen.dart';
 import 'package:emotionless/screens/edit_products_screen.dart';
 import 'package:emotionless/screens/home_screen.dart';
@@ -41,6 +42,7 @@ class MyApp extends StatelessWidget {
           '/edit_product': (context) => EditProducts(settings.arguments),
           '/add_orders': (context) => AddOrders(),
           '/edit_order': (context) => EditOrder(settings.arguments),
+          '/edit_design': (context) => EditDesigns(settings.arguments),
         };
         WidgetBuilder builder = routes[settings.name];
         return MaterialPageRoute(builder: (ctx) => builder(ctx));

@@ -1,4 +1,5 @@
 import 'package:emotionless/screens/customers_screen.dart';
+import 'package:emotionless/screens/designs_screen.dart';
 import 'package:emotionless/screens/orders_screen.dart';
 import 'package:emotionless/screens/products_screen.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +14,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 3,
+      length: 4,
       child: Scaffold(
         appBar: AppBar(
           bottom: TabBar(
@@ -23,6 +24,8 @@ class _HomeScreenState extends State<HomeScreen> {
               Tab(text: 'Customers', icon: Icon(Icons.people))
                   .showCursorOnHover,
               Tab(text: 'Products', icon: Icon(Icons.spa)).showCursorOnHover,
+              Tab(text: 'Designs', icon: Icon(Icons.extension))
+                  .showCursorOnHover,
             ],
           ),
           title: Text('Emotionless Order Management'),
@@ -32,6 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
             OrdersScreen(),
             CustomersScreen(),
             ProductsScreen(),
+            DesignsScreen(),
           ],
         ),
       ),

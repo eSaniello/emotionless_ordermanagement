@@ -14,8 +14,6 @@ class EditOrder extends StatefulWidget {
 
 class _EditOrderState extends State<EditOrder> {
   final Firestore firestore = fb.firestore();
-  TextEditingController size = TextEditingController();
-  TextEditingController quantity = TextEditingController();
   TextEditingController address = TextEditingController();
 
   DocumentSnapshot selectedCustomer;
@@ -24,8 +22,17 @@ class _EditOrderState extends State<EditOrder> {
   DocumentSnapshot selectedProduct;
   List<DocumentSnapshot> products = <DocumentSnapshot>[];
 
+  DocumentSnapshot selectedDesign;
+  List<DocumentSnapshot> designs = <DocumentSnapshot>[];
+
   String selectedStatus;
   List<String> status = <String>[];
+
+  List<String> sizes = <String>[];
+  String selectedSize;
+
+  List<String> quantities = <String>[];
+  String selectedQuantity;
 
   bool isEmpty;
 
@@ -57,13 +64,39 @@ class _EditOrderState extends State<EditOrder> {
       });
     });
 
+    firestore.collection('designs').get().then((value) {
+      setState(() {
+        value.forEach((doc) {
+          designs.add(doc);
+        });
+
+        selectedDesign = designs
+            .firstWhere((element) => element.id == widget.order['design'].id);
+      });
+    });
+
     status.add('pending');
     status.add('delivered');
     selectedStatus =
         status.firstWhere((element) => element == widget.order['status']);
 
-    size.text = widget.order['size'];
-    quantity.text = widget.order['quantity'];
+    sizes.add('XS');
+    sizes.add('S');
+    sizes.add('M');
+    sizes.add('L');
+    sizes.add('XL');
+    sizes.add('XXL');
+    sizes.add('2XL');
+    sizes.add('3XL');
+    selectedSize =
+        sizes.firstWhere((element) => element == widget.order['size']);
+
+    for (int i = 0; i < 150; i++) {
+      quantities.add((i + 1).toString());
+    }
+    selectedQuantity =
+        quantities.firstWhere((element) => element == widget.order['quantity']);
+
     address.text = widget.order['address'];
   }
 
@@ -71,6 +104,7 @@ class _EditOrderState extends State<EditOrder> {
     String orderId,
     DocumentSnapshot customer,
     DocumentSnapshot product,
+    DocumentSnapshot design,
     String address,
     String quantity,
     String size,
@@ -94,6 +128,7 @@ class _EditOrderState extends State<EditOrder> {
                 firestore.collection('orders').doc(orderId).update(data: {
                   'customer': customer.id,
                   'product': product.id,
+                  'design': design.id,
                   'size': size,
                   'quantity': quantity,
                   'status': status,
@@ -169,7 +204,7 @@ class _EditOrderState extends State<EditOrder> {
                         width: 10,
                       ),
                       Text(
-                        prod.data()['name'] + " || " + prod.data()['design'],
+                        prod.data()['name'],
                         style: TextStyle(color: Colors.black),
                       ),
                     ],
@@ -177,14 +212,81 @@ class _EditOrderState extends State<EditOrder> {
                 );
               }).toList(),
             ).showCursorOnHover,
-            TextField(
-              controller: size,
-              decoration: InputDecoration(hintText: 'Size'),
-            ),
-            TextField(
-              controller: quantity,
-              decoration: InputDecoration(hintText: 'Quantity'),
-            ),
+            DropdownButton<DocumentSnapshot>(
+              hint: Text("Select design"),
+              value: selectedDesign,
+              onChanged: (DocumentSnapshot value) {
+                setState(() {
+                  selectedDesign = value;
+                });
+              },
+              items: designs.map((DocumentSnapshot design) {
+                return DropdownMenuItem<DocumentSnapshot>(
+                  value: design,
+                  child: Row(
+                    children: <Widget>[
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        design.data()['design'],
+                        style: TextStyle(color: Colors.black),
+                      ),
+                    ],
+                  ),
+                );
+              }).toList(),
+            ).showCursorOnHover,
+            DropdownButton<String>(
+              hint: Text("Size"),
+              value: selectedSize,
+              onChanged: (String value) {
+                setState(() {
+                  selectedSize = value;
+                });
+              },
+              items: sizes.map((String size) {
+                return DropdownMenuItem<String>(
+                  value: size,
+                  child: Row(
+                    children: <Widget>[
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        size,
+                        style: TextStyle(color: Colors.black),
+                      ),
+                    ],
+                  ),
+                );
+              }).toList(),
+            ).showCursorOnHover,
+            DropdownButton<String>(
+              hint: Text("Quantity"),
+              value: selectedQuantity,
+              onChanged: (String value) {
+                setState(() {
+                  selectedQuantity = value;
+                });
+              },
+              items: quantities.map((String quantity) {
+                return DropdownMenuItem<String>(
+                  value: quantity,
+                  child: Row(
+                    children: <Widget>[
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        quantity,
+                        style: TextStyle(color: Colors.black),
+                      ),
+                    ],
+                  ),
+                );
+              }).toList(),
+            ).showCursorOnHover,
             TextField(
               controller: address,
               decoration: InputDecoration(hintText: 'Address'),
@@ -227,17 +329,19 @@ class _EditOrderState extends State<EditOrder> {
                 if (widget.order['id'] != "" &&
                     selectedCustomer != null &&
                     selectedProduct != null &&
-                    selectedStatus != "" &&
-                    address.text != "" &&
-                    quantity.text != "" &&
-                    size.text != "") {
+                    selectedDesign != null &&
+                    selectedStatus != null &&
+                    selectedSize != null &&
+                    selectedQuantity != null &&
+                    address.text != "") {
                   _showConfirmDialog(
                     widget.order['id'],
                     selectedCustomer,
                     selectedProduct,
+                    selectedDesign,
                     address.text,
-                    quantity.text,
-                    size.text,
+                    selectedQuantity,
+                    selectedSize,
                     selectedStatus,
                   );
                 } else {

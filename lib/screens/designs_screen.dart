@@ -3,14 +3,14 @@ import 'package:firebase/firebase.dart' as fb;
 import 'package:firebase/firestore.dart';
 import '../extensions/hover_extensions.dart';
 
-class ProductsScreen extends StatefulWidget {
+class DesignsScreen extends StatefulWidget {
   @override
-  _ProductsScreenState createState() => _ProductsScreenState();
+  _DesignsScreenState createState() => _DesignsScreenState();
 }
 
-class _ProductsScreenState extends State<ProductsScreen> {
+class _DesignsScreenState extends State<DesignsScreen> {
   final Firestore firestore = fb.firestore();
-  TextEditingController name = TextEditingController();
+  TextEditingController design = TextEditingController();
 
   void _showDeleteDialog(DocumentSnapshot ds) {
     showDialog(
@@ -18,7 +18,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text('Are you sure?'),
-          content: Text('This product will be permanently deleted!'),
+          content: Text('This design will be permanently deleted!'),
           actions: <Widget>[
             FlatButton(
               child: new Text("Cancel"),
@@ -29,7 +29,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
             FlatButton(
               child: Text('Confirm'),
               onPressed: () {
-                firestore.collection('products').doc(ds.id).delete();
+                firestore.collection('designs').doc(ds.id).delete();
                 Navigator.pop(context);
                 Navigator.pop(context);
               },
@@ -45,12 +45,12 @@ class _ProductsScreenState extends State<ProductsScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Add a new product'),
+          title: Text('Add a new design'),
           content: Column(
             children: <Widget>[
               TextField(
-                controller: name,
-                decoration: InputDecoration(hintText: 'Name'),
+                controller: design,
+                decoration: InputDecoration(hintText: 'Design'),
               ),
             ],
           ),
@@ -62,10 +62,10 @@ class _ProductsScreenState extends State<ProductsScreen> {
               },
             ).showCursorOnHover,
             FlatButton(
-              child: Text('Add Product'),
+              child: Text('Add Design'),
               onPressed: () {
-                firestore.collection('products').add({
-                  'name': name.text,
+                firestore.collection('designs').add({
+                  'design': design.text,
                 });
                 Navigator.pop(context);
               },
@@ -80,7 +80,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: StreamBuilder(
-        stream: firestore.collection('products').onSnapshot,
+        stream: firestore.collection('designs').onSnapshot,
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
             return Text("Loading..");
@@ -94,7 +94,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
                     Icons.spa,
                     color: Colors.black,
                   ),
-                  title: Text('${ds.data()['name']}'),
+                  title: Text('${ds.data()['design']}'),
                   trailing: PopupMenuButton(
                     color: Colors.white,
                     itemBuilder: (context) => [
@@ -104,7 +104,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
                           child: Text('Edit'),
                           onPressed: () {
                             Navigator.of(context).pushNamed(
-                              '/edit_product',
+                              '/edit_design',
                               arguments: ds,
                             );
                           },
