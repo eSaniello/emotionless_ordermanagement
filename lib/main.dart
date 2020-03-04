@@ -1,4 +1,5 @@
 import 'package:emotionless/screens/add_orders_screen.dart';
+import 'package:emotionless/screens/colors_screen.dart';
 import 'package:emotionless/screens/edit_customers_screen.dart';
 import 'package:emotionless/screens/edit_designs_screen.dart';
 import 'package:emotionless/screens/edit_order_screen.dart';
@@ -6,6 +7,9 @@ import 'package:emotionless/screens/edit_products_screen.dart';
 import 'package:emotionless/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase/firebase.dart' as Firebase;
+
+//TODO: Van alle orders wiens status op pending
+//staat wil je een soort overzicht hebben van de items die je moet bestellen
 
 Future<void> main() async {
   if (Firebase.apps.isEmpty) {
@@ -43,6 +47,7 @@ class MyApp extends StatelessWidget {
           '/add_orders': (context) => AddOrders(),
           '/edit_order': (context) => EditOrder(settings.arguments),
           '/edit_design': (context) => EditDesigns(settings.arguments),
+          '/colors': (context) => ColorsScreen(),
         };
         WidgetBuilder builder = routes[settings.name];
         return MaterialPageRoute(builder: (ctx) => builder(ctx));

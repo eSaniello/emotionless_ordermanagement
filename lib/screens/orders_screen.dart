@@ -99,6 +99,13 @@ class _OrdersScreenState extends State<OrdersScreen> {
     }
   }
 
+  /*TODO: Ik ga het een lijst maken met  product 
+  //en customer naam en delivered of niet. 
+  //En als je erop klikt dan krijg je meer info*/
+  //Listitem
+
+  //TODO: change status naar pending, delivered of ordered.
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -110,6 +117,9 @@ class _OrdersScreenState extends State<OrdersScreen> {
             sortAscending: sort,
             sortColumnIndex: 8,
             columns: [
+              //TODO: Add color column
+              //TODO: status moet naar eerste colom
+              //TODO: address moet bij klant komen
               DataColumn(label: Text('Order date')),
               DataColumn(label: Text('Customer')),
               DataColumn(label: Text('Product')),

@@ -197,6 +197,7 @@ class _AddOrdersState extends State<AddOrders> {
                 );
               }).toList(),
             ).showCursorOnHover,
+            //TODO: add color
             DropdownButton<String>(
               hint: Text("Size"),
               value: selectedSize,

@@ -237,6 +237,7 @@ class _EditOrderState extends State<EditOrder> {
                 );
               }).toList(),
             ).showCursorOnHover,
+            //TODO: add color
             DropdownButton<String>(
               hint: Text("Size"),
               value: selectedSize,

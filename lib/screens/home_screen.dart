@@ -29,6 +29,31 @@ class _HomeScreenState extends State<HomeScreen> {
             ],
           ),
           title: Text('Emotionless Order Management'),
+          actions: <Widget>[
+            PopupMenuButton(
+              color: Colors.white,
+              itemBuilder: (context) => [
+                PopupMenuItem(
+                  value: 1,
+                  child: FlatButton(
+                    child: Text('Add colors'),
+                    onPressed: () {
+                      Navigator.of(context).pushNamed('/colors');
+                    },
+                  ).showCursorOnHover,
+                ),
+                // PopupMenuItem(
+                //   value: 2,
+                //   child: FlatButton(
+                //     child: Text('Delete'),
+                //     onPressed: () {
+                //       // _showDeleteDialog(ds);
+                //     },
+                //   ),
+                // ),
+              ],
+            ).showCursorOnHover,
+          ],
         ),
         body: TabBarView(
           children: [
