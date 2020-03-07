@@ -79,6 +79,9 @@ class _DesignsScreenState extends State<DesignsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Designs'),
+      ),
       body: StreamBuilder(
         stream: firestore.collection('designs').onSnapshot,
         builder: (context, snapshot) {

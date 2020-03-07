@@ -1,5 +1,4 @@
 import 'package:emotionless/screens/customers_screen.dart';
-import 'package:emotionless/screens/designs_screen.dart';
 import 'package:emotionless/screens/orders_screen.dart';
 import 'package:emotionless/screens/products_screen.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +13,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 4,
+      length: 3,
       child: Scaffold(
         appBar: AppBar(
           bottom: TabBar(
@@ -24,8 +23,6 @@ class _HomeScreenState extends State<HomeScreen> {
               Tab(text: 'Customers', icon: Icon(Icons.people))
                   .showCursorOnHover,
               Tab(text: 'Products', icon: Icon(Icons.spa)).showCursorOnHover,
-              Tab(text: 'Designs', icon: Icon(Icons.extension))
-                  .showCursorOnHover,
             ],
           ),
           title: Text('Emotionless Order Management'),
@@ -36,21 +33,21 @@ class _HomeScreenState extends State<HomeScreen> {
                 PopupMenuItem(
                   value: 1,
                   child: FlatButton(
-                    child: Text('Add colors'),
+                    child: Text('Colors'),
                     onPressed: () {
                       Navigator.of(context).pushNamed('/colors');
                     },
                   ).showCursorOnHover,
                 ),
-                // PopupMenuItem(
-                //   value: 2,
-                //   child: FlatButton(
-                //     child: Text('Delete'),
-                //     onPressed: () {
-                //       // _showDeleteDialog(ds);
-                //     },
-                //   ),
-                // ),
+                PopupMenuItem(
+                  value: 2,
+                  child: FlatButton(
+                    child: Text('Designs'),
+                    onPressed: () {
+                      Navigator.of(context).pushNamed('/designs');
+                    },
+                  ),
+                ),
               ],
             ).showCursorOnHover,
           ],
@@ -60,7 +57,6 @@ class _HomeScreenState extends State<HomeScreen> {
             OrdersScreen(),
             CustomersScreen(),
             ProductsScreen(),
-            DesignsScreen(),
           ],
         ),
       ),

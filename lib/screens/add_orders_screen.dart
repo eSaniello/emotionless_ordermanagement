@@ -24,6 +24,9 @@ class _AddOrdersState extends State<AddOrders> {
   DocumentSnapshot selectedDesign;
   List<DocumentSnapshot> designs = <DocumentSnapshot>[];
 
+  DocumentSnapshot selectedColor;
+  List<DocumentSnapshot> colors = <DocumentSnapshot>[];
+
   List<String> sizes = <String>[];
   String selectedSize;
 
@@ -60,6 +63,14 @@ class _AddOrdersState extends State<AddOrders> {
       setState(() {
         value.forEach((doc) {
           designs.add(doc);
+        });
+      });
+    });
+
+    firestore.collection('colors').get().then((value) {
+      setState(() {
+        value.forEach((doc) {
+          colors.add(doc);
         });
       });
     });
@@ -197,7 +208,37 @@ class _AddOrdersState extends State<AddOrders> {
                 );
               }).toList(),
             ).showCursorOnHover,
-            //TODO: add color
+            DropdownButton<DocumentSnapshot>(
+              hint: Text("Select color"),
+              value: selectedColor,
+              onChanged: (DocumentSnapshot value) {
+                setState(() {
+                  selectedColor = value;
+                });
+              },
+              items: colors.map((DocumentSnapshot color) {
+                return DropdownMenuItem<DocumentSnapshot>(
+                  value: color,
+                  child: Row(
+                    children: <Widget>[
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        color.data()['color'],
+                        style: TextStyle(
+                            color: Color.fromARGB(
+                          color.data()['a'],
+                          color.data()['r'],
+                          color.data()['g'],
+                          color.data()['b'],
+                        )),
+                      ),
+                    ],
+                  ),
+                );
+              }).toList(),
+            ).showCursorOnHover,
             DropdownButton<String>(
               hint: Text("Size"),
               value: selectedSize,
@@ -267,12 +308,14 @@ class _AddOrdersState extends State<AddOrders> {
                     selectedDesign != null &&
                     selectedSize != null &&
                     selectedQuantity != null &&
+                    selectedColor != null &&
                     address.text != "") {
                   firestore.collection('orders').add({
                     'date': DateTime.now(),
                     'customer': selectedCustomer.id,
                     'product': selectedProduct.id,
                     'design': selectedDesign.id,
+                    'color': selectedColor.id,
                     'size': selectedSize,
                     'quantity': selectedQuantity,
                     'address': address.text,
@@ -299,6 +342,7 @@ class _AddOrdersState extends State<AddOrders> {
                       'customer': customer.id,
                       'product': selectedProduct.id,
                       'design': selectedDesign.id,
+                      'color': selectedColor.id,
                       'size': selectedSize,
                       'quantity': selectedQuantity,
                       'address': address.text,

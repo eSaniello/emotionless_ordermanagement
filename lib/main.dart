@@ -1,11 +1,13 @@
 import 'package:emotionless/screens/add_orders_screen.dart';
 import 'package:emotionless/screens/colors_screen.dart';
+import 'package:emotionless/screens/designs_screen.dart';
 import 'package:emotionless/screens/edit_color_screen.dart';
 import 'package:emotionless/screens/edit_customers_screen.dart';
 import 'package:emotionless/screens/edit_designs_screen.dart';
 import 'package:emotionless/screens/edit_order_screen.dart';
 import 'package:emotionless/screens/edit_products_screen.dart';
 import 'package:emotionless/screens/home_screen.dart';
+import 'package:emotionless/screens/order_details_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase/firebase.dart' as Firebase;
 
@@ -47,9 +49,11 @@ class MyApp extends StatelessWidget {
           '/edit_product': (context) => EditProducts(settings.arguments),
           '/add_orders': (context) => AddOrders(),
           '/edit_order': (context) => EditOrder(settings.arguments),
+          '/designs': (context) => DesignsScreen(),
           '/edit_design': (context) => EditDesigns(settings.arguments),
           '/colors': (context) => ColorsScreen(),
           '/edit_color': (context) => EditColor(settings.arguments),
+          '/order_details': (context) => OrderDetailsScreen(settings.arguments),
         };
         WidgetBuilder builder = routes[settings.name];
         return MaterialPageRoute(builder: (ctx) => builder(ctx));
