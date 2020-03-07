@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase/firebase.dart' as fb;
 import 'package:firebase/firestore.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import '../extensions/hover_extensions.dart';
 
 class ColorsScreen extends StatefulWidget {
@@ -11,6 +12,11 @@ class ColorsScreen extends StatefulWidget {
 class _ColorsScreenState extends State<ColorsScreen> {
   final Firestore firestore = fb.firestore();
   TextEditingController colorName = TextEditingController();
+  Color pickerColor = Color(0xff443a49);
+
+  void changeColor(Color color) {
+    setState(() => pickerColor = color);
+  }
 
   void _showDeleteDialog(DocumentSnapshot ds) {
     showDialog(
@@ -52,7 +58,12 @@ class _ColorsScreenState extends State<ColorsScreen> {
                 controller: colorName,
                 decoration: InputDecoration(hintText: 'Name'),
               ),
-              //TODO: colorpicker goes here!!!
+              ColorPicker(
+                pickerColor: pickerColor,
+                onColorChanged: changeColor,
+                showLabel: true,
+                pickerAreaHeightPercent: 0.8,
+              ),
             ],
           ),
           actions: <Widget>[
@@ -67,10 +78,10 @@ class _ColorsScreenState extends State<ColorsScreen> {
               onPressed: () {
                 firestore.collection('colors').add({
                   'color': colorName.text,
-                  //TODO: rgb from colorpicker goes here!!!
-                  // 'r':
-                  // 'g':
-                  // 'b':
+                  'r': pickerColor.red,
+                  'g': pickerColor.green,
+                  'b': pickerColor.blue,
+                  'a': pickerColor.alpha,
                 });
                 Navigator.pop(context);
               },
@@ -100,11 +111,11 @@ class _ColorsScreenState extends State<ColorsScreen> {
                 return ListTile(
                   leading: Icon(
                     Icons.color_lens,
-                    color: Color.fromRGBO(
+                    color: Color.fromARGB(
+                      ds.data()['a'],
                       ds.data()['r'],
                       ds.data()['g'],
                       ds.data()['b'],
-                      1.0,
                     ),
                   ),
                   title: Text('${ds.data()['color']}'),
@@ -117,7 +128,7 @@ class _ColorsScreenState extends State<ColorsScreen> {
                           child: Text('Edit'),
                           onPressed: () {
                             Navigator.of(context).pushNamed(
-                              '/edit_color', //TODO: create edit color page
+                              '/edit_color',
                               arguments: ds,
                             );
                           },
