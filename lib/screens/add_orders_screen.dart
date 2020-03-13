@@ -33,14 +33,12 @@ class _AddOrdersState extends State<AddOrders> {
   List<String> quantities = <String>[];
   String selectedQuantity;
 
-  bool isEmpty;
   bool newCustomer;
 
   @override
   void initState() {
     super.initState();
 
-    isEmpty = false;
     newCustomer = false;
 
     firestore.collection('customers').get().then((value) {
@@ -98,12 +96,6 @@ class _AddOrdersState extends State<AddOrders> {
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            isEmpty == true
-                ? Text(
-                    'Please fill in all fields!',
-                    style: TextStyle(color: Colors.red),
-                  )
-                : Container(),
             newCustomer == false
                 ? DropdownButton<DocumentSnapshot>(
                     hint: Text("Select customer"),
@@ -302,14 +294,7 @@ class _AddOrdersState extends State<AddOrders> {
             RaisedButton(
               child: Text('Place order'),
               onPressed: () {
-                if (newCustomer == false &&
-                    selectedCustomer != null &&
-                    selectedProduct != null &&
-                    selectedDesign != null &&
-                    selectedSize != null &&
-                    selectedQuantity != null &&
-                    // selectedColor != null &&
-                    address.text != "") {
+                if (newCustomer == false) {
                   firestore.collection('orders').add({
                     'date': DateTime.now(),
                     'customer': selectedCustomer.id,
@@ -323,15 +308,7 @@ class _AddOrdersState extends State<AddOrders> {
                   });
 
                   Navigator.pushReplacementNamed(context, '/home');
-                } else if (newCustomer == true &&
-                    firstname.text != "" &&
-                    lastname.text != "" &&
-                    mobile.text != "" &&
-                    selectedProduct != null &&
-                    selectedDesign != null &&
-                    selectedSize != null &&
-                    selectedQuantity != null &&
-                    address.text != "") {
+                } else if (newCustomer == true) {
                   firestore.collection('customers').add({
                     'firstname': firstname.text,
                     'lastname': lastname.text,
@@ -351,10 +328,6 @@ class _AddOrdersState extends State<AddOrders> {
                   });
 
                   Navigator.pushReplacementNamed(context, '/home');
-                } else {
-                  setState(() {
-                    isEmpty = true;
-                  });
                 }
               },
             ).showCursorOnHover,

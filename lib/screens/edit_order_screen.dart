@@ -37,13 +37,9 @@ class _EditOrderState extends State<EditOrder> {
   List<String> quantities = <String>[];
   String selectedQuantity;
 
-  bool isEmpty;
-
   @override
   void initState() {
     super.initState();
-
-    isEmpty = false;
 
     firestore.collection('customers').get().then((value) {
       setState(() {
@@ -171,12 +167,6 @@ class _EditOrderState extends State<EditOrder> {
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            isEmpty == true
-                ? Text(
-                    'Please fill in all fields!',
-                    style: TextStyle(color: Colors.red),
-                  )
-                : Container(),
             DropdownButton<DocumentSnapshot>(
               hint: Text("Select customer"),
               value: selectedCustomer,
@@ -386,31 +376,17 @@ class _EditOrderState extends State<EditOrder> {
             RaisedButton(
               child: Text('Update order'),
               onPressed: () {
-                if (widget.order['id'] != "" &&
-                    selectedCustomer != null &&
-                    selectedProduct != null &&
-                    selectedDesign != null &&
-                    // selectedColor != null &&
-                    selectedStatus != null &&
-                    selectedSize != null &&
-                    selectedQuantity != null &&
-                    address.text != "") {
-                  _showConfirmDialog(
-                    widget.order['id'],
-                    selectedCustomer,
-                    selectedProduct,
-                    selectedDesign,
-                    // selectedColor,
-                    address.text,
-                    selectedQuantity,
-                    selectedSize,
-                    selectedStatus,
-                  );
-                } else {
-                  setState(() {
-                    isEmpty = true;
-                  });
-                }
+                _showConfirmDialog(
+                  widget.order['id'],
+                  selectedCustomer,
+                  selectedProduct,
+                  selectedDesign,
+                  // selectedColor,
+                  address.text,
+                  selectedQuantity,
+                  selectedSize,
+                  selectedStatus,
+                );
               },
             ).showCursorOnHover,
           ],

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase/firebase.dart' as fb;
 import 'package:firebase/firestore.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
-import '../extensions/hover_extensions.dart';
+import '../../extensions/hover_extensions.dart';
 
 class ColorsScreen extends StatefulWidget {
   @override
