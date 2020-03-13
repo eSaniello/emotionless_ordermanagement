@@ -9,6 +9,8 @@ class ColorsScreen extends StatefulWidget {
   _ColorsScreenState createState() => _ColorsScreenState();
 }
 
+//Color management valt weg.
+
 class _ColorsScreenState extends State<ColorsScreen> {
   final Firestore firestore = fb.firestore();
   TextEditingController colorName = TextEditingController();

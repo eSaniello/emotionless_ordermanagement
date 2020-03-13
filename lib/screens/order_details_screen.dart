@@ -26,7 +26,7 @@ class OrderDetailsScreen extends StatelessWidget {
             Text('Design: ${order['design'].data()['design']}'),
             Text('Size: ${order['size']}'),
             Text('Quantity: ${order['quantity']}'),
-            Text('Color: ${order['color'].data()['color']}'),
+            // Text('Color: ${order['color'].data()['color']}'),
           ],
         ),
       ),

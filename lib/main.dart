@@ -1,7 +1,7 @@
 import 'package:emotionless/screens/add_orders_screen.dart';
-import 'package:emotionless/screens/colors_screen.dart';
 import 'package:emotionless/screens/designs_screen.dart';
-import 'package:emotionless/screens/edit_color_screen.dart';
+// import 'package:emotionless/screens/colors_screen.dart';
+// import 'package:emotionless/screens/edit_color_screen.dart';
 import 'package:emotionless/screens/edit_customers_screen.dart';
 import 'package:emotionless/screens/edit_designs_screen.dart';
 import 'package:emotionless/screens/edit_order_screen.dart';
@@ -13,6 +13,10 @@ import 'package:firebase/firebase.dart' as Firebase;
 
 //TODO: Van alle orders wiens status op pending
 //staat wil je een soort overzicht hebben van de items die je moet bestellen
+
+//TODO: Niets moet verplicht ingevuld zijn
+
+//TODO: COMPLETE REDESIGN. (Neumorphism)
 
 Future<void> main() async {
   if (Firebase.apps.isEmpty) {
@@ -51,8 +55,8 @@ class MyApp extends StatelessWidget {
           '/edit_order': (context) => EditOrder(settings.arguments),
           '/designs': (context) => DesignsScreen(),
           '/edit_design': (context) => EditDesigns(settings.arguments),
-          '/colors': (context) => ColorsScreen(),
-          '/edit_color': (context) => EditColor(settings.arguments),
+          // '/colors': (context) => ColorsScreen(),
+          // '/edit_color': (context) => EditColor(settings.arguments),
           '/order_details': (context) => OrderDetailsScreen(settings.arguments),
         };
         WidgetBuilder builder = routes[settings.name];

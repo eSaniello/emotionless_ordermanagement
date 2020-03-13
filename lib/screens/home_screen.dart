@@ -30,15 +30,15 @@ class _HomeScreenState extends State<HomeScreen> {
             PopupMenuButton(
               color: Colors.white,
               itemBuilder: (context) => [
-                PopupMenuItem(
-                  value: 1,
-                  child: FlatButton(
-                    child: Text('Colors'),
-                    onPressed: () {
-                      Navigator.of(context).pushNamed('/colors');
-                    },
-                  ).showCursorOnHover,
-                ),
+                // PopupMenuItem(
+                //   value: 1,
+                //   child: FlatButton(
+                //     child: Text('Colors'),
+                //     onPressed: () {
+                //       Navigator.of(context).pushNamed('/colors');
+                //     },
+                //   ).showCursorOnHover,
+                // ),
                 PopupMenuItem(
                   value: 2,
                   child: FlatButton(

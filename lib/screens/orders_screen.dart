@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:firebase/firebase.dart' as fb;
 import 'package:firebase/firestore.dart';
-// import 'package:intl/intl.dart';
 import '../extensions/hover_extensions.dart';
 
 class OrdersScreen extends StatefulWidget {
   @override
   _OrdersScreenState createState() => _OrdersScreenState();
 }
+
+//TODO: Pending tot een dropdown creeren.
+
+//TODO: Item/aantal en design info ook zichtbaar zijn in listtiles
 
 class _OrdersScreenState extends State<OrdersScreen> {
   final Firestore firestore = fb.firestore();
@@ -68,26 +71,20 @@ class _OrdersScreenState extends State<OrdersScreen> {
                 .doc(o.data()['design'])
                 .get()
                 .then((design) {
-              firestore
-                  .collection('colors')
-                  .doc(o.data()['color'])
-                  .get()
-                  .then((color) {
-                setState(() {
-                  var order = {
-                    'id': o.id,
-                    'customer': cus,
-                    'product': prod,
-                    'design': design,
-                    'color': color,
-                    'address': o.data()['address'],
-                    'quantity': o.data()['quantity'],
-                    'size': o.data()['size'],
-                    'status': o.data()['status'],
-                    'date': o.data()['date'],
-                  };
-                  orders.add(order);
-                });
+              setState(() {
+                var order = {
+                  'id': o.id,
+                  'customer': cus,
+                  'product': prod,
+                  'design': design,
+                  // 'color': color,
+                  'address': o.data()['address'],
+                  'quantity': o.data()['quantity'],
+                  'size': o.data()['size'],
+                  'status': o.data()['status'],
+                  'date': o.data()['date'],
+                };
+                orders.add(order);
               });
             });
           });
@@ -95,16 +92,6 @@ class _OrdersScreenState extends State<OrdersScreen> {
       });
     });
   }
-
-  // onSortColum(int columnIndex, bool ascending) {
-  //   if (columnIndex == 8) {
-  //     if (ascending) {
-  //       orders.sort((a, b) => a['status'].compareTo(b['status']));
-  //     } else {
-  //       orders.sort((a, b) => b['status'].compareTo(a['status']));
-  //     }
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {

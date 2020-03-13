@@ -25,8 +25,8 @@ class _EditOrderState extends State<EditOrder> {
   DocumentSnapshot selectedDesign;
   List<DocumentSnapshot> designs = <DocumentSnapshot>[];
 
-  DocumentSnapshot selectedColor;
-  List<DocumentSnapshot> colors = <DocumentSnapshot>[];
+  // DocumentSnapshot selectedColor;
+  // List<DocumentSnapshot> colors = <DocumentSnapshot>[];
 
   String selectedStatus;
   List<String> status = <String>[];
@@ -78,16 +78,16 @@ class _EditOrderState extends State<EditOrder> {
       });
     });
 
-    firestore.collection('colors').get().then((value) {
-      setState(() {
-        value.forEach((doc) {
-          colors.add(doc);
-        });
+    // firestore.collection('colors').get().then((value) {
+    //   setState(() {
+    //     value.forEach((doc) {
+    //       colors.add(doc);
+    //     });
 
-        selectedColor = colors
-            .firstWhere((element) => element.id == widget.order['color'].id);
-      });
-    });
+    //     selectedColor = colors
+    //         .firstWhere((element) => element.id == widget.order['color'].id);
+    //   });
+    // });
 
     status.add('pending');
     status.add('delivered');
@@ -120,7 +120,7 @@ class _EditOrderState extends State<EditOrder> {
     DocumentSnapshot customer,
     DocumentSnapshot product,
     DocumentSnapshot design,
-    DocumentSnapshot color,
+    // DocumentSnapshot color,
     String address,
     String quantity,
     String size,
@@ -145,7 +145,7 @@ class _EditOrderState extends State<EditOrder> {
                   'customer': customer.id,
                   'product': product.id,
                   'design': design.id,
-                  'color': color.id,
+                  // 'color': color.id,
                   'size': size,
                   'quantity': quantity,
                   'status': status,
@@ -254,49 +254,49 @@ class _EditOrderState extends State<EditOrder> {
                 );
               }).toList(),
             ).showCursorOnHover,
-            DropdownButton<DocumentSnapshot>(
-              hint: Text(
-                "Select color",
-                style: TextStyle(
-                  color: selectedColor != null
-                      ? Color.fromARGB(
-                          selectedColor.data()['a'],
-                          selectedColor.data()['r'],
-                          selectedColor.data()['g'],
-                          selectedColor.data()['b'],
-                        )
-                      : Colors.black,
-                ),
-              ),
-              value: selectedColor,
-              onChanged: (DocumentSnapshot value) {
-                setState(() {
-                  selectedColor = value;
-                });
-              },
-              items: colors.map((DocumentSnapshot color) {
-                return DropdownMenuItem<DocumentSnapshot>(
-                  value: color,
-                  child: Row(
-                    children: <Widget>[
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Text(
-                        color.data()['color'],
-                        style: TextStyle(
-                            color: Color.fromARGB(
-                          color.data()['a'],
-                          color.data()['r'],
-                          color.data()['g'],
-                          color.data()['b'],
-                        )),
-                      ),
-                    ],
-                  ),
-                );
-              }).toList(),
-            ).showCursorOnHover,
+            // DropdownButton<DocumentSnapshot>(
+            //   hint: Text(
+            //     "Select color",
+            //     style: TextStyle(
+            //       color: selectedColor != null
+            //           ? Color.fromARGB(
+            //               selectedColor.data()['a'],
+            //               selectedColor.data()['r'],
+            //               selectedColor.data()['g'],
+            //               selectedColor.data()['b'],
+            //             )
+            //           : Colors.black,
+            //     ),
+            //   ),
+            //   value: selectedColor,
+            //   onChanged: (DocumentSnapshot value) {
+            //     setState(() {
+            //       selectedColor = value;
+            //     });
+            //   },
+            //   items: colors.map((DocumentSnapshot color) {
+            //     return DropdownMenuItem<DocumentSnapshot>(
+            //       value: color,
+            //       child: Row(
+            //         children: <Widget>[
+            //           SizedBox(
+            //             width: 10,
+            //           ),
+            //           Text(
+            //             color.data()['color'],
+            //             style: TextStyle(
+            //                 color: Color.fromARGB(
+            //               color.data()['a'],
+            //               color.data()['r'],
+            //               color.data()['g'],
+            //               color.data()['b'],
+            //             )),
+            //           ),
+            //         ],
+            //       ),
+            //     );
+            //   }).toList(),
+            // ).showCursorOnHover,
             DropdownButton<String>(
               hint: Text("Size"),
               value: selectedSize,
@@ -390,7 +390,7 @@ class _EditOrderState extends State<EditOrder> {
                     selectedCustomer != null &&
                     selectedProduct != null &&
                     selectedDesign != null &&
-                    selectedColor != null &&
+                    // selectedColor != null &&
                     selectedStatus != null &&
                     selectedSize != null &&
                     selectedQuantity != null &&
@@ -400,7 +400,7 @@ class _EditOrderState extends State<EditOrder> {
                     selectedCustomer,
                     selectedProduct,
                     selectedDesign,
-                    selectedColor,
+                    // selectedColor,
                     address.text,
                     selectedQuantity,
                     selectedSize,
