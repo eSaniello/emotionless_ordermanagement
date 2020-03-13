@@ -7,6 +7,7 @@ import 'package:emotionless/screens/edit_designs_screen.dart';
 import 'package:emotionless/screens/edit_order_screen.dart';
 import 'package:emotionless/screens/edit_products_screen.dart';
 import 'package:emotionless/screens/home_screen.dart';
+import 'package:emotionless/screens/login_screen.dart';
 import 'package:emotionless/screens/order_details_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase/firebase.dart' as Firebase;
@@ -14,9 +15,9 @@ import 'package:firebase/firebase.dart' as Firebase;
 //TODO: Van alle orders wiens status op pending
 //staat wil je een soort overzicht hebben van de items die je moet bestellen
 
-//TODO: Niets moet verplicht ingevuld zijn
-
 //TODO: COMPLETE REDESIGN. (Neumorphism)
+
+//TODO: Add simple hardcoded login
 
 Future<void> main() async {
   if (Firebase.apps.isEmpty) {
@@ -44,7 +45,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: HomeScreen(),
+      home: LoginScreen(),
       onGenerateRoute: (RouteSettings settings) {
         print('build route for ${settings.name}');
         var routes = <String, WidgetBuilder>{

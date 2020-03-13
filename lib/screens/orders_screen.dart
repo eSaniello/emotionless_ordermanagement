@@ -8,10 +8,6 @@ class OrdersScreen extends StatefulWidget {
   _OrdersScreenState createState() => _OrdersScreenState();
 }
 
-//TODO: Pending tot een dropdown creeren.
-
-//TODO: Item/aantal en design info ook zichtbaar zijn in listtiles
-
 class _OrdersScreenState extends State<OrdersScreen> {
   final Firestore firestore = fb.firestore();
 
@@ -124,13 +120,64 @@ class _OrdersScreenState extends State<OrdersScreen> {
               itemCount: orders.length,
               itemBuilder: (context, index) {
                 return ListTile(
-                  leading: Text(orders[index]['status']),
+                  leading: PopupMenuButton(
+                    child: Text(orders[index]['status']),
+                    color: Colors.white,
+                    itemBuilder: (context) => [
+                      PopupMenuItem(
+                          value: 2,
+                          child: FlatButton(
+                            child: Text('pending'),
+                            onPressed: () {
+                              firestore
+                                  .collection('orders')
+                                  .doc(orders[index]['id'])
+                                  .update(data: {
+                                'status': 'pending',
+                              });
+                              Navigator.pop(context);
+                              Navigator.pushReplacementNamed(context, '/home');
+                            },
+                          )),
+                      PopupMenuItem(
+                          value: 2,
+                          child: FlatButton(
+                            child: Text('delivered'),
+                            onPressed: () {
+                              firestore
+                                  .collection('orders')
+                                  .doc(orders[index]['id'])
+                                  .update(data: {
+                                'status': 'delivered',
+                              });
+                              Navigator.pop(context);
+                              Navigator.pushReplacementNamed(context, '/home');
+                            },
+                          )),
+                      PopupMenuItem(
+                          value: 2,
+                          child: FlatButton(
+                            child: Text('ordered'),
+                            onPressed: () {
+                              firestore
+                                  .collection('orders')
+                                  .doc(orders[index]['id'])
+                                  .update(data: {
+                                'status': 'ordered',
+                              });
+                              Navigator.pop(context);
+                              Navigator.pushReplacementNamed(context, '/home');
+                            },
+                          )),
+                    ],
+                  ).showCursorOnHover,
                   title: Text(
                     orders[index]['customer'].data()['firstname'] +
                         ' ' +
                         orders[index]['customer'].data()['lastname'],
                   ),
-                  subtitle: Text(orders[index]['product'].data()['name']),
+                  subtitle: Text(
+                      "${orders[index]['quantity']}X ${orders[index]['product'].data()['name']}, ${orders[index]['design'].data()['design']} design"),
                   trailing: PopupMenuButton(
                     color: Colors.white,
                     itemBuilder: (context) => [
@@ -170,89 +217,6 @@ class _OrdersScreenState extends State<OrdersScreen> {
           ),
         ],
       ),
-      // SingleChildScrollView(
-      //   scrollDirection: Axis.horizontal,
-      //   child: DataTable(
-      //     sortAscending: sort,
-      //     sortColumnIndex: 8,
-      //     columns: [
-      //       DataColumn(label: Text('Order date')),
-      //       DataColumn(label: Text('Customer')),
-      //       DataColumn(label: Text('Product')),
-      //       DataColumn(label: Text('Design')),
-      //       DataColumn(label: Text('Size')),
-      //       DataColumn(numeric: true, label: Text('Quantity')),
-      //       DataColumn(label: Text('Address')),
-      //       DataColumn(numeric: true, label: Text('Mobile')),
-      //       DataColumn(
-      //           label: Text('Status'),
-      //           onSort: (columnIndex, ascending) {
-      //             setState(() {
-      //               sort = !sort;
-      //             });
-      //             onSortColum(columnIndex, ascending);
-      //           }),
-      //       DataColumn(label: Text('Edit / Delete')),
-      //     ],
-      //     rows: orders
-      //         .map((order) => DataRow(cells: [
-      //               DataCell(
-      //                 Text(
-      //                   '${DateFormat("dd-MMM-yyyy").format(order['date'])}',
-      //                 ),
-      //               ),
-      //               DataCell(Text(
-      //                 '${order['customer'].data()['firstname']} ${order['customer'].data()['lastname']}',
-      //               )),
-      //               DataCell(Text(
-      //                 '${order['product'].data()['name']}',
-      //               )),
-      //               DataCell(Text(
-      //                 '${order['design'].data()['design']}',
-      //               )),
-      //               DataCell(Text(
-      //                 '${order['size']}',
-      //               )),
-      //               DataCell(Text(
-      //                 '${order['quantity']}',
-      //               )),
-      //               DataCell(Text(
-      //                 '${order['address']}',
-      //               )),
-      //               DataCell(Text(
-      //                 '${order['customer'].data()['mobile']}',
-      //               )),
-      //               DataCell(
-      //                 Text(
-      //                   '${order['status']}',
-      //                 ),
-      //               ),
-      //               DataCell(
-      //                 Row(
-      //                   children: <Widget>[
-      //                     IconButton(
-      //                       icon: Icon(Icons.edit),
-      //                       onPressed: () {
-      //                         Navigator.of(context).pushNamed(
-      //                           '/edit_order',
-      //                           arguments: order,
-      //                         );
-      //                       },
-      //                     ).showCursorOnHover,
-      //                     IconButton(
-      //                       icon: Icon(Icons.delete),
-      //                       onPressed: () {
-      //                         _showDeleteDialog(order);
-      //                       },
-      //                     ).showCursorOnHover,
-      //                   ],
-      //                 ),
-      //               ),
-      //             ]))
-      //         .toList(),
-      //   ),
-      // ),
-      // ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () {
