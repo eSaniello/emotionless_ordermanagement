@@ -16,6 +16,12 @@ class _HomeScreenState extends State<HomeScreen> {
       length: 3,
       child: Scaffold(
         appBar: AppBar(
+          leading: Image.asset(
+            'logo.png',
+            fit: BoxFit.contain,
+            // width: 100,
+            // height: 100,
+          ),
           bottom: TabBar(
             tabs: [
               Tab(text: 'Orders', icon: Icon(Icons.shopping_basket))

@@ -43,13 +43,13 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Emotionless',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.blueGrey,
       ),
-      home: LoginScreen(),
+      // home: LoginScreen(),
       onGenerateRoute: (RouteSettings settings) {
         print('build route for ${settings.name}');
         var routes = <String, WidgetBuilder>{
-          '/home': (context) => HomeScreen(),
+          '/': (context) => HomeScreen(),
           '/edit_customer': (context) => EditCustomers(settings.arguments),
           '/edit_product': (context) => EditProducts(settings.arguments),
           '/add_orders': (context) => AddOrders(),
